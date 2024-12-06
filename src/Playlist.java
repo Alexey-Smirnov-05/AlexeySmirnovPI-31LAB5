@@ -2,12 +2,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Playlist {
-    private ArrayList<Track> tracks;
+    private ArrayList<Track> tracks; // Работа с массивом объектов (ArrayList)
     private int currentTrack;
+    private static int instanceCount = 0; // Статическое поле для отслеживания количества экземпляров
 
     public Playlist() {
         tracks = new ArrayList<>();
         currentTrack = 0;
+        instanceCount++; // Увеличиваем счетчик при создании нового экземпляра
+    }
+
+    public static int getInstanceCount() { // Статический метод для получения количества экземпляров
+        return instanceCount;
     }
 
     public void viewSongs() {
@@ -39,17 +45,17 @@ public class Playlist {
     }
 
     public void setCurrentTrack(int currentTrack) {
-        this.currentTrack = currentTrack;
+        this.currentTrack = currentTrack; // Разумное использование оператора this
     }
 
     public void loadTracksFromFile(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) { // Обработка строк
             String line;
             while ((line = br.readLine()) != null) {
                 addSong(new Track(line));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при загрузке треков: " + e.getMessage()); // Перехват исключений
         }
     }
 
@@ -60,7 +66,7 @@ public class Playlist {
                 bw.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при сохранении треков: " + e.getMessage()); // Перехват исключений
         }
     }
 }
